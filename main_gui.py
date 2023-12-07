@@ -40,7 +40,8 @@ def save_html():
                 file.write(css_text)
 
 
-client = OpenAI(api_key='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')
+client = OpenAI(api_key='set your api key')
+
 save_img_path = './test_img'
 save_html_path = './test_html'
 css_text = None
