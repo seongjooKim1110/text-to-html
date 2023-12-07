@@ -31,7 +31,7 @@ def save_html():
             file.write(output_text.get("1.0", tk.END))
 
 
-client = OpenAI(api_key='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')
+client = OpenAI(api_key='')
 save_img_path = './test_img'
 #save_html_path = './test_html'
 
