@@ -9,6 +9,7 @@ def generate_image():
     img, img_url = txt_to_img(client, text) # 실제 함수 호출
     #img = Image.open("placeholder.png")  # 임시 이미지
     update_image(img)
+    save_img(save_img_path, img)
 
 def update_image(img):
     img = img.resize((250, 250), Image.ANTIALIAS)
@@ -17,23 +18,33 @@ def update_image(img):
     img_label.image = img_tk
 
 def convert_to_html():
-    html_text = img_to_html(client, save_img_path+'/image.png')
+    global css_text, css_name
+    html_text, css_text, css_name = img_to_html(client, save_img_path+'/image.png')
     # 이미지를 HTML로 변환하는 함수 (여기서는 예시 코드로 대체)
-    #html_text = "<html><body><h1>Example HTML</h1></body></html>"
+    
     output_text.delete("1.0", tk.END)
     output_text.insert(tk.END, html_text)
 
+
 def save_html():
+    global css_text, css_name
     # 생성된 HTML 텍스트를 파일로 저장
-    file_path = filedialog.asksaveasfilename(defaultextension=".html")
+    file_path = filedialog.askdirectory()#filedialog.asksaveasfilename() #defaultextension=".html"
     if file_path:
-        with open(file_path, "w") as file:
+        with open(file_path+"/index.html", "w") as file:
             file.write(output_text.get("1.0", tk.END))
+    print()
+    if css_text is not None:
+        css_file_path = file_path
+        with open(css_file_path+"/"+css_name, "w") as file:
+                file.write(css_text)
 
 
-client = OpenAI(api_key='')
+client = OpenAI(api_key='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')
 save_img_path = './test_img'
-#save_html_path = './test_html'
+save_html_path = './test_html'
+css_text = None
+css_name = None
 
 # GUI 설정
 root = tk.Tk()

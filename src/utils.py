@@ -32,6 +32,17 @@ def txt_to_img(client, text):
 
     return img, image_url
 
+def extract_href_value(html_text):
+    start_index = html_text.find('href="')
+    if start_index == -1:
+        return None
+    start_q = start_index + len('href="')
+    end_q = html_text.find('"', start_q)
+
+    href_value = html_text[start_q:end_q]
+
+    return href_value
+
 def img_to_html(client, image_url):
     base64_image = encode_image(image_url)
     
@@ -57,7 +68,15 @@ def img_to_html(client, image_url):
 
     res = response.choices[0].message.content
     print(res)
-    html_text = res.split('```')[1]
-    return html_text
+    html_text_parts = res.split('```')
+
+    if len(html_text_parts) > 3: 
+        html_text = html_text_parts[1]
+        css_text = html_text_parts[3]
+        css_name = extract_href_value(html_text)
+        return html_text, css_text, css_name
+    else :
+        html_text = html_text_parts[1]
+        return html_text, None, None
 
     
